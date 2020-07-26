@@ -15,6 +15,6 @@ export default class CustomersController {
       email,
     });
 
-    return response.status(201).json({ customer: customerCreated });
+    return response.status(201).json(customerCreated);
   }
 }
