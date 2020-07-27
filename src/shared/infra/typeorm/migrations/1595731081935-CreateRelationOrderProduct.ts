@@ -22,16 +22,18 @@ export default class CreateRelationOrderProduct1595731081935
           {
             name: 'order_id',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'product_id',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'price',
             type: 'decimal',
+            precision: 8,
+            scale: 2,
           },
           {
             name: 'quantity',

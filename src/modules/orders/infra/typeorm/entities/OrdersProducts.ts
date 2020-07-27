@@ -6,6 +6,8 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import Order from '@modules/orders/infra/typeorm/entities/Order';
@@ -16,27 +18,34 @@ class OrdersProducts {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Order)
+  @ManyToMany(() => Order, order => order.order_products)
   @JoinColumn({ name: 'order_id' })
+  @JoinTable({
+    name: 'orders', // table name for the junction table of this relation
+    joinColumn: {
+      name: 'order_id',
+      referencedColumnName: 'id',
+    },
+  })
   order: Order;
 
-  @ManyToOne(() => Product)
+  @ManyToOne(() => Product, product => product.order_products)
   @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @Column()
+  @Column({ select: true })
   product_id: string;
 
-  @Column()
+  @Column({ select: false })
   order_id: string;
 
-  @Column('decimal', { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 8, scale: 2 })
   price: number;
 
   @Column()
   quantity: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date;
 
   @UpdateDateColumn()

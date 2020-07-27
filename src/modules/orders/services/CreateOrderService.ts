@@ -50,6 +50,9 @@ class CreateOrderService {
         if (productFindInStock.quantity < product.quantity) {
           throw new AppError('Insufficient Stock');
         }
+
+        productFindInStock.quantity -= product.quantity;
+
         return {
           product_id: product.id,
           price: productFindInStock.price,
@@ -71,9 +74,7 @@ class CreateOrderService {
       products: productsToCreateOrder,
     });
 
-    const sucrilos = await this.ordersRepository.findById(order.id);
-
-    if (sucrilos) return sucrilos;
+    await this.productsRepository.updateQuantity(productsExisting);
 
     return order;
   }
